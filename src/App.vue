@@ -34,11 +34,7 @@ export default {
           name: 'Dinesh Chugtai',
           email: 'dinesh@piedpiper.com',
         },
-        {
-          id: 4,
-          name: 'Tomasz Rojek',
-          email: 'tomekr@gmail.com',
-        },
+        
       ],
     }
   },
