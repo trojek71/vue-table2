@@ -3,7 +3,7 @@
   <div id="employee-form">
     <form v-on:submit.prevent="handleSubmit">
       <label>Employee name</label>
-      <input v-model="employee.name"  type="text" :class="{'has-error': submitting && invalidName }" @focus="clearStatus" @keypress="clearStatus" />
+      <input ref="first" v-model="employee.name"  type="text" :class="{'has-error': submitting && invalidName }" @focus="clearStatus" @keypress="clearStatus" />
       <label>Employee Email</label>
       <input v-model="employee.email" type="text"  :class="{ 'has-error': submitting && invalidEmail }" @focus="clearStatus"/>
       <p v-if="error && submitting" class="error-message">
@@ -51,6 +51,7 @@
     }
 
     this.$emit('add:employee', this.employee)
+    this.$refs.first.focus()
     this.employee = {
       name: '',
       email: '',
