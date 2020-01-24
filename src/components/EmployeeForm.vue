@@ -18,6 +18,32 @@
 </template>
 
 <script>
+import gql from "graphql-tag";
+//graphql
+const ADD_EPLOYEE = gql`
+  mutation addMovie(
+    $title: String!
+    $director: String!
+    $composer: String!
+    $release_date: date!
+  ) {
+    insert_movies(
+      objects: [
+        {
+          title: $title
+          director: $director
+          composer: $composer
+          release_date: $release_date
+        }
+      ]
+    ) {
+      returning {
+        id
+      }
+    }
+  }
+`;
+//graphql
   export default {
     name: 'employee-form',
     data() {
