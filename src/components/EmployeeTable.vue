@@ -13,39 +13,61 @@
       </thead>
       <tbody>
           <tr v-for="employee in employees" :key="employee.id">
-  <td v-if="editing === employee.id">
-    <input type="text" v-model="employee.name" />
-  </td>
-  <td v-else>{{employee.name}}</td>
-  <td v-if="editing === employee.id">
-    <input type="text" v-model="employee.email" />
-  </td>
-  <td v-else>{{employee.email}}</td>
-  <td v-if="editing === employee.id">
-    <button @click="editEmployee(employee)">Save</button>
-    <button class="muted-button" @click="editing = null">Cancel</button>
-  </td>
-  <td v-else>
-    <button @click="editMode(employee.id)">Edit</button>
-    <button @click="$emit('delete:employee', employee.id)">Delete</button>
-  </td>
-</tr>
+            <td v-if="editing === employee.id">
+              <input type="text" v-model="employee.name" />
+            </td>
+            <td v-else>{{employee.name}}</td>
+            <td v-if="editing === employee.id">
+              <input type="text" v-model="employee.email" />
+            </td>
+            <td v-else>{{employee.email}}</td>
+            <td v-if="editing === employee.id">
+                <button @click="editEmployee(employee)">Save</button>
+                <button class="muted-button" @click="editing = null">Cancel</button>
+            </td>
+                <td v-else>
+                  <button @click="editMode(employee.id)">Edit</button>
+                  <button @click="$emit('delete:employee', employee.id)">Delete</button>
+                </td>
+            </tr>
       </tbody>
     </table>
   </div>
 </template>
 
 <script>
+import gql from "graphql-tag";
+const GET_EMPLYEES = gql`
+  subscription getMovies {
+    employees {
+      id
+      name
+      email
+    }
+  }
+`;
   export default {
     name: 'employee-table',
-    props: {
-        employees: Array,
-    },
+    //props: {
+    //    employees: Array,
+    //},
     data() {
   return {
+    employees:[],
     editing: null,
   }
 },
+apollo: {
+    $subscribe: {
+    movies: {
+      query: GET_EMPLYEES,
+      result(data) {
+          // Let's update the local data
+          this.employees = data.data.employees;
+        }
+    }
+    }
+  },
 methods: {
   editMode(id) {
     this.editing = id
